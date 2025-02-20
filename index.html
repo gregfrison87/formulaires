@@ -12,17 +12,20 @@
 </head>
 <body>
     <h2>Formulaire interactif</h2>
-    <form id="form">
+    <form id="form" enctype="multipart/form-data">
+        <!-- Question 1 -->
         <div id="question1" class="hidden">
             <label for="details">Email</label><br>
             <textarea id="details" name="details"></textarea><br><br>
         </div>
-        <!-- Question 2 -->
-        <label for="choix">Magasin</label><br>
-            <option>Sélectionner...</option>
-            <option">Avignon</option>
+
+        <!-- Question 2 - Sélection de magasin -->
+        <label for="magasin">Magasin</label><br>
+        <select id="magasin" name="magasin">
+            <option value="">Sélectionner...</option>
+            <option>Avignon</option>
             <option>Chambery</option>
-            <option>Chambery Sud / Saint alban leysse</option>
+            <option>Chambery Sud / Saint Alban leysse</option>
             <option>Crolles</option>
             <option>Epagny</option>
             <option>Frontignan</option>
@@ -32,43 +35,38 @@
             <option>Thuir</option>
         </select><br><br>
 
-        <!-- Question 3 -->
+        <!-- Question 3 - Avant vente ou après vente -->
         <label for="choix">Avant vente ou après vente</label><br>
         <select id="choix" name="choix" onchange="showNextQuestion()">
             <option value="">Sélectionner...</option>
             <option value="A">Avant vente</option>
             <option value="B">Après vente</option>
-
         </select><br><br>
 
-        <!-- Question 4 (hidden by default) -->
+        <!-- Question 4 - Date d'achat (visible si 'Après vente' est sélectionné) -->
         <div id="questionB" class="hidden">
-            <label for="details">Date d'achat</label><br>
-            <textarea id="details" name="details"></textarea><br><br>
+            <label for="dateAchat">Date d'achat</label><br>
+            <input type="date" id="dateAchat" name="dateAchat"><br><br>
         </div>
 
-        <!-- Question 5 (hidden by default) -->
-        <div id="questionB" class="hidden">
-            <label for="details">Date d'achat</label><br>
-            <textarea id="details" name="details"></textarea><br><br>
-        </div>
+        <!-- Question 5 - Champ pour télécharger un fichier -->
+        <label for="file">Téléchargez un fichier :</label><br>
+        <input type="file" id="file" name="file"><br><br>
 
         <button type="submit">Envoyer</button>
     </form>
 
     <script>
+        // Fonction pour afficher ou masquer des questions selon la réponse choisie
         function showNextQuestion() {
             var choix = document.getElementById('choix').value;
             
             // Masquer toutes les questions
             document.getElementById('questionB').classList.add('hidden');
-            document.getElementById('message').classList.add('hidden');
 
             // Afficher la question en fonction du choix
             if (choix === "B") {
                 document.getElementById('questionB').classList.remove('hidden');
-            } else if (choix === "A") {
-                document.getElementById('message').classList.remove('hidden');
             }
         }
 
@@ -76,19 +74,19 @@
         document.getElementById('form').addEventListener('submit', function(event) {
             event.preventDefault();
 
-            let data = {
-                choix: document.getElementById('choix').value,
-                details: document.getElementById('details') ? document.getElementById('details').value : '',
-            };
+            // Récupérer les données du formulaire
+            var formData = new FormData(document.getElementById('form'));
 
+            // Envoi des données et fichier via Fetch
             fetch("https://script.google.com/macros/s/AKfycbwi9EJ8gSZGHN3BqmrgnVXYWeg9xBMYzbyN0wTTX8C2EXq7y2K650gbGkCgsSmSVQUJZg/exec", {
                 method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            }).then(() => {
-                alert("Formulaire envoyé !");
-            }).catch(error => console.error(error));
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Formulaire envoyé avec succès !");
+            })
+            .catch(error => console.error('Erreur:', error));
         });
     </script>
 </body>
