@@ -3,34 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire</title>
+    <title>Formulaire Interactif</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <h2>Formulaire de contact</h2>
+    <h2>Formulaire interactif</h2>
     <form id="form">
-        <label>Nom :</label>
-        <input type="text" id="nom" required><br>
-        
-        <label>Email :</label>
-        <input type="email" id="email" required><br>
-        
-        <label>Message :</label>
-        <textarea id="message" required></textarea><br>
-        
+        <div id="question1" class="hidden">
+            <label for="details">Email</label><br>
+            <textarea id="details" name="details"></textarea><br><br>
+        </div>
+        <!-- Question 2 -->
+        <label for="choix">Magasin</label><br>
+        <select id="choix" name="choix" onchange="showNextQuestion()">
+            <option>Sélectionner...</option>
+            <option">Avignon</option>
+            <option>Chambery</option>
+            <option>Chambery Sud / Saint alban leysse</option>
+            <option>Crolles</option>
+            <option>Epagny</option>
+            <option>Frontignan</option>
+            <option>Orleans</option>
+            <option>Rumilly</option>
+            <option>Seynod</option>
+            <option>Thuir</option>
+        </select><br><br>
+
+        <!-- Question 3 -->
+        <label for="choix">Avant vente ou après vente</label><br>
+        <select id="choix" name="choix" onchange="showNextQuestion()">
+            <option value="">Sélectionner...</option>
+            <option value="A">Avant vente</option>
+            <option value="B">Après vente</option>
+
+        </select><br><br>
+
+        <!-- Question 4 (hidden by default) -->
+        <div id="questionB" class="hidden">
+            <label for="details">Date d'achat</label><br>
+            <textarea id="details" name="details"></textarea><br><br>
+        </div>
+
+        <!-- Question 5 (hidden by default) -->
+        <div id="questionB" class="hidden">
+            <label for="details">Date d'achat</label><br>
+            <textarea id="details" name="details"></textarea><br><br>
+        </div>
+
         <button type="submit">Envoyer</button>
     </form>
 
     <script>
+        function showNextQuestion() {
+            var choix = document.getElementById('choix').value;
+            
+            // Masquer toutes les questions
+            document.getElementById('questionB').classList.add('hidden');
+            document.getElementById('message').classList.add('hidden');
+
+            // Afficher la question en fonction du choix
+            if (choix === "B") {
+                document.getElementById('questionB').classList.remove('hidden');
+            } else if (choix === "A") {
+                document.getElementById('message').classList.remove('hidden');
+            }
+        }
+
+        // Soumettre le formulaire
         document.getElementById('form').addEventListener('submit', function(event) {
             event.preventDefault();
-            
+
             let data = {
-                nom: document.getElementById('nom').value,
-                email: document.getElementById('email').value,
-                message: document.getElementById('message').value
+                choix: document.getElementById('choix').value,
+                details: document.getElementById('details') ? document.getElementById('details').value : '',
             };
 
-            fetch("https://script.google.com/macros/s/AKfycbwi9EJ8gSZGHN3BqmrgnVXYWeg9xBMYzbyN0wTTX8C2EXq7y2K650gbGkCgsSmSVQUJZg/exec", { // Remplace par l'URL du script
+            fetch("https://script.google.com/macros/s/AKfycbwi9EJ8gSZGHN3BqmrgnVXYWeg9xBMYzbyN0wTTX8C2EXq7y2K650gbGkCgsSmSVQUJZg/exec", {
                 method: "POST",
                 mode: "no-cors",
                 headers: { "Content-Type": "application/json" },
