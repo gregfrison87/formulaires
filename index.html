@@ -5,58 +5,158 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulaire Interactif</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #007bff;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        select, input[type="text"], input[type="date"], textarea, input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        select:focus, input[type="text"]:focus, input[type="date"]:focus, textarea:focus, input[type="file"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
         .hidden {
             display: none;
+        }
+
+        .form-container p {
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .form-container .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <h2>Formulaire interactif</h2>
-    <form id="form" enctype="multipart/form-data">
-        <!-- Question 1 -->
-        <div id="question1" class="hidden">
-            <label for="details">Email</label><br>
-            <textarea id="details" name="details"></textarea><br><br>
+
+    <div class="form-container">
+        <h2>Formulaire interactif</h2>
+        <form id="form" enctype="multipart/form-data">
+            <!-- Question 1 -->
+            <div id="question1" class="hidden">
+                <label for="details">Email</label>
+                <textarea id="details" name="details" placeholder="Entrez votre email"></textarea>
+            </div>
+
+            <!-- Question 2 - Sélection de magasin -->
+            <label for="magasin">Magasin</label>
+            <select id="magasin" name="magasin">
+                <option value="">Sélectionner...</option>
+                <option>Avignon</option>
+                <option>Chambery</option>
+                <option>Chambery Sud / Saint Alban leysse</option>
+                <option>Crolles</option>
+                <option>Epagny</option>
+                <option>Frontignan</option>
+                <option>Orleans</option>
+                <option>Rumilly</option>
+                <option>Seynod</option>
+                <option>Thuir</option>
+            </select>
+
+            <!-- Question 3 - Avant vente ou après vente -->
+            <label for="choix">Avant vente ou après vente</label>
+            <select id="choix" name="choix" onchange="showNextQuestion()">
+                <option value="">Sélectionner...</option>
+                <option value="A">Avant vente</option>
+                <option value="B">Après vente</option>
+            </select>
+
+            <!-- Question 4 - Date d'achat (visible si 'Après vente' est sélectionné) -->
+            <div id="questionB" class="hidden">
+                <label for="dateAchat">Date d'achat</label>
+                <input type="date" id="dateAchat" name="dateAchat">
+            </div>
+
+            <!-- Question 5 - Champ pour télécharger un fichier -->
+            <div id="question2B" class="hidden">
+                <label for="file">Téléchargez la facture client :</label>
+                <input type="file" id="file" name="file">
+            </div>
+
+            <button type="submit">Envoyer</button>
+        </form>
+
+        <div class="footer">
+            <p>Merci d'avoir rempli ce formulaire</p>
         </div>
-
-        <!-- Question 2 - Sélection de magasin -->
-        <label for="magasin">Magasin</label><br>
-        <select id="magasin" name="magasin">
-            <option value="">Sélectionner...</option>
-            <option>Avignon</option>
-            <option>Chambery</option>
-            <option>Chambery Sud / Saint Alban leysse</option>
-            <option>Crolles</option>
-            <option>Epagny</option>
-            <option>Frontignan</option>
-            <option>Orleans</option>
-            <option>Rumilly</option>
-            <option>Seynod</option>
-            <option>Thuir</option>
-        </select><br><br>
-
-        <!-- Question 3 - Avant vente ou après vente -->
-        <label for="choix">Avant vente ou après vente</label><br>
-        <select id="choix" name="choix" onchange="showNextQuestion()">
-            <option value="">Sélectionner...</option>
-            <option value="A">Avant vente</option>
-            <option value="B">Après vente</option>
-        </select><br><br>
-
-        <!-- Question 4 - Date d'achat (visible si 'Après vente' est sélectionné) -->
-        <div id="questionB" class="hidden">
-            <label for="dateAchat">Date d'achat</label><br>
-            <input type="date" id="dateAchat" name="dateAchat"><br><br>
-        </div>
-
-        <!-- Question 5 - Champ pour télécharger un fichier -->
-        <div id="question2B" class="hidden">
-        <label for="file">Téléchargez la facture lcient :</label><br>
-        <input type="file" id="file" name="file"><br><br>
-        </div>
-        
-        <button type="submit">Envoyer</button>
-    </form>
+    </div>
 
     <script>
         // Fonction pour afficher ou masquer des questions selon la réponse choisie
@@ -70,7 +170,7 @@
             // Afficher la question en fonction du choix
             if (choix === "B") {
                 document.getElementById('questionB').classList.remove('hidden');
-                document.getElementById('questionB').classList.remove('hidden');
+                document.getElementById('question2B').classList.remove('hidden');
             }
         }
 
@@ -93,5 +193,6 @@
             .catch(error => console.error('Erreur:', error));
         });
     </script>
+
 </body>
 </html>
