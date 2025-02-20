@@ -149,6 +149,21 @@
                 <label for="file">Téléchargez la facture client :</label>
                 <input type="file" id="file" name="file">
             </div>
+			
+			<!-- Question 6 - Sélection de marque -->
+            <label for="Marque">Marque</label>
+            <select id="Marque" name="Marque">
+                <option value="">Sélectionner...</option>
+                <option value="C">Abus</option>
+                <option value="C">Kryptonite</option>
+                <option value="C">Endura</option>
+                <option>Autre</option>
+           </select>
+		   
+		   <!-- Question 7 (hidden by default) -->
+        <div id="message" class="hidden">
+            <p>Tu peux échanger le produit en avance à ton client si moins de deux ans et garantie avérée</p>
+        </div>
 
             <button type="submit">Envoyer</button>
         </form>
@@ -171,6 +186,9 @@
             if (choix === "B") {
                 document.getElementById('questionB').classList.remove('hidden');
                 document.getElementById('question2B').classList.remove('hidden');
+            }
+			if (choix === "C") {
+                document.getElementById('message').classList.remove('hidden');
             }
         }
 
