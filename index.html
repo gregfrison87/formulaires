@@ -4,20 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulaire</title>
-    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <form action="process.php" method="post">
-        <label for="name">Nom :</label>
-        <input type="text" id="name" name="name" required>
+    <h2>Formulaire de contact</h2>
+    <form id="form">
+        <label>Nom :</label>
+        <input type="text" id="nom" required><br>
         
-        <label for="email">Email :</label>
-        <input type="email" id="email" name="email" required>
+        <label>Email :</label>
+        <input type="email" id="email" required><br>
         
-        <label for="message">Message :</label>
-        <textarea id="message" name="message" required></textarea>
+        <label>Message :</label>
+        <textarea id="message" required></textarea><br>
         
         <button type="submit">Envoyer</button>
     </form>
+
+    <script>
+        document.getElementById('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            let data = {
+                nom: document.getElementById('nom').value,
+                email: document.getElementById('email').value,
+                message: document.getElementById('message').value
+            };
+
+            fetch("https://script.google.com/macros/s/AKfycbwi9EJ8gSZGHN3BqmrgnVXYWeg9xBMYzbyN0wTTX8C2EXq7y2K650gbGkCgsSmSVQUJZg/exec", { // Remplace par l'URL du script
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            }).then(() => {
+                alert("Formulaire envoyé !");
+            }).catch(error => console.error(error));
+        });
+    </script>
 </body>
 </html>
