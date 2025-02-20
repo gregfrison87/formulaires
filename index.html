@@ -50,7 +50,7 @@
         </div>
 
         <!-- Question 5 - Champ pour télécharger un fichier -->
-        <div id="questionB" class="hidden">
+        <div id="question2B" class="hidden">
         <label for="file">Téléchargez la facture lcient :</label><br>
         <input type="file" id="file" name="file"><br><br>
         </div>
@@ -65,9 +65,11 @@
             
             // Masquer toutes les questions
             document.getElementById('questionB').classList.add('hidden');
+            document.getElementById('question2B').classList.add('hidden');
 
             // Afficher la question en fonction du choix
             if (choix === "B") {
+                document.getElementById('questionB').classList.remove('hidden');
                 document.getElementById('questionB').classList.remove('hidden');
             }
         }
