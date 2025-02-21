@@ -78,12 +78,6 @@
             display: none;
         }
 
-        .form-container p {
-            text-align: center;
-            color: #777;
-            font-size: 14px;
-        }
-
         .form-container .footer {
             text-align: center;
             margin-top: 20px;
@@ -108,13 +102,12 @@
     <div class="form-container">
         <h2>Formulaire interactif</h2>
         <form id="form" enctype="multipart/form-data">
-            <!-- Question 1 -->
-            <div id="question1" class="hidden">
-                <label for="details">Email</label>
-                <textarea id="details" name="details" placeholder="Entrez votre email"></textarea>
-            </div>
+            
+            <!-- Email -->
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" placeholder="Entrez votre email">
 
-            <!-- Question 2 - Sélection de magasin -->
+            <!-- Sélection du magasin -->
             <label for="magasin">Magasin</label>
             <select id="magasin" name="magasin">
                 <option value="">Sélectionner...</option>
@@ -130,7 +123,7 @@
                 <option>Thuir</option>
             </select>
 
-            <!-- Question 3 - Avant vente ou après vente -->
+            <!-- Avant vente ou après vente -->
             <label for="choix">Avant vente ou après vente</label>
             <select id="choix" name="choix" onchange="showNextQuestion()">
                 <option value="">Sélectionner...</option>
@@ -138,32 +131,32 @@
                 <option value="B">Après vente</option>
             </select>
 
-            <!-- Question 4 - Date d'achat (visible si 'Après vente' est sélectionné) -->
+            <!-- Date d'achat (visible si 'Après vente' est sélectionné) -->
             <div id="questionB" class="hidden">
                 <label for="dateAchat">Date d'achat</label>
                 <input type="date" id="dateAchat" name="dateAchat">
             </div>
 
-            <!-- Question 5 - Champ pour télécharger un fichier -->
+            <!-- Champ pour télécharger une facture (visible si 'Après vente' est sélectionné) -->
             <div id="question2B" class="hidden">
                 <label for="file">Téléchargez la facture client :</label>
                 <input type="file" id="file" name="file">
             </div>
-			
-			<!-- Question 6 - Sélection de marque -->
+
+            <!-- Sélection de la marque -->
             <label for="Marque">Marque</label>
-            <select id="Marque" name="Marque">
+            <select id="Marque" name="Marque" onchange="showMarqueMessage()">
                 <option value="">Sélectionner...</option>
-                <option value="C">Abus</option>
-                <option value="C">Kryptonite</option>
-                <option value="C">Endura</option>
-                <option>Autre</option>
-           </select>
-		   
-		   <!-- Question 7 (hidden by default) -->
-        <div id="message" class="hidden">
-            <p>Tu peux échanger le produit en avance à ton client si moins de deux ans et garantie avérée</p>
-        </div>
+                <option value="Abus">Abus</option>
+                <option value="Kryptonite">Kryptonite</option>
+                <option value="Endura">Endura</option>
+                <option value="Autre">Autre</option>
+            </select>
+
+            <!-- Message affiché si certaines marques sont sélectionnées -->
+            <div id="message" class="hidden">
+                <p>Tu peux échanger le produit en avance à ton client si moins de deux ans et garantie avérée.</p>
+            </div>
 
             <button type="submit">Envoyer</button>
         </form>
@@ -174,33 +167,37 @@
     </div>
 
     <script>
-        // Fonction pour afficher ou masquer des questions selon la réponse choisie
+        // Fonction pour afficher ou masquer les questions en fonction du choix
         function showNextQuestion() {
             var choix = document.getElementById('choix').value;
-            
-            // Masquer toutes les questions
+
             document.getElementById('questionB').classList.add('hidden');
             document.getElementById('question2B').classList.add('hidden');
-			document.getElementById('message').classList.add('hidden');
 
-            // Afficher la question en fonction du choix
             if (choix === "B") {
                 document.getElementById('questionB').classList.remove('hidden');
                 document.getElementById('question2B').classList.remove('hidden');
             }
-			if (choix === "C") {
-                document.getElementById('message').classList.remove('hidden');
+        }
+
+        // Fonction pour afficher un message si une marque spécifique est sélectionnée
+        function showMarqueMessage() {
+            var marque = document.getElementById('Marque').value;
+            var messageDiv = document.getElementById('message');
+
+            messageDiv.classList.add('hidden');
+
+            if (marque === "Abus" || marque === "Kryptonite" || marque === "Endura") {
+                messageDiv.classList.remove('hidden');
             }
         }
 
-        // Soumettre le formulaire
+        // Soumission du formulaire
         document.getElementById('form').addEventListener('submit', function(event) {
             event.preventDefault();
 
-            // Récupérer les données du formulaire
             var formData = new FormData(document.getElementById('form'));
 
-            // Envoi des données et fichier via Fetch
             fetch("https://script.google.com/macros/s/AKfycbwi9EJ8gSZGHN3BqmrgnVXYWeg9xBMYzbyN0wTTX8C2EXq7y2K650gbGkCgsSmSVQUJZg/exec", {
                 method: "POST",
                 body: formData
